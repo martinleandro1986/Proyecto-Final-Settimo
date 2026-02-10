@@ -1,0 +1,79 @@
+let saldoActual=50000;
+let saldoElemento=document.getElementById("saldo");
+
+
+function consultarSaldo(){
+    saldoElemento.textContent=`El saldo actual es ${saldoActual}`;
+}
+
+consultarSaldo();
+
+
+let botonTransferir = document.getElementById("botonTransferir");
+botonTransferir.addEventListener("click", transferir);
+
+function transferir(){
+    let destino=document.getElementById("destinatario").value;
+    let montoIngresado=Number(document.getElementById("montoTransferencia").value);
+
+    if(destino===""){
+        document.getElementById("validacionMontoT").textContent="Ingrese CBU/CVU/ALIAS";
+        return;
+    }
+
+    if(montoIngresado<=0){
+        document.getElementById("validacionMontoT").textContent="Ingrese un monto valido";
+        return;
+    }
+    if (montoIngresado>saldoActual){
+    document.getElementById("validacionMontoT").textContent="El saldo es insuficiente"
+} else  { saldoActual=saldoActual-montoIngresado;
+    consultarSaldo();
+     document.getElementById("validacionMontoT").textContent=`Se ha transferido la suma de $ ${montoIngresado} exitosamente`;
+
+}}
+
+let botonPrestamo=document.getElementById("botonPrestamo");
+botonPrestamo.addEventListener("click",sacarPrestamo);
+
+
+function sacarPrestamo(){
+    let montoPreaprobado=5000000;
+    let montoSolicitado=Number(document.getElementById("prestamo").value);
+
+    if(montoPreaprobado<montoSolicitado){
+        document.getElementById("validacionPrestamo").textContent="Ingrese un importe menor"
+    } else {saldoActual=saldoActual + montoSolicitado;
+        consultarSaldo();
+        document.getElementById("validacionPrestamo").textContent=`El préstamo ha sido acreditado en su cuenta por el importe de ${montoSolicitado} con TNA 30% pagadero 24 cuotas mensuales`;
+    }
+
+}
+
+
+let botonDolares=document.getElementById("botonDolares");
+botonDolares.addEventListener("click",comprarDolares);
+
+function comprarDolares(){
+    let cotizacion=1460;
+    let montoPesos=Number(document.getElementById("montoPesos").value);
+    let conversion= Math.floor(montoPesos/cotizacion);
+
+    if(montoPesos<=0){
+        document.getElementById("validacionDolares").textContent=`Ingrese un monto valido`;
+        return;
+    }   
+
+    if (montoPesos>saldoActual){
+        document.getElementById("validacionDolares").textContent=`Su saldo es insuficiente`
+    } else {saldoActual= saldoActual-montoPesos;
+        consultarSaldo();
+        document.getElementById("validacionDolares").textContent=`Usted ha comprado la cantidad de ${conversion} dólares equivalentes a $ ${montoPesos} `;
+
+    }
+
+
+
+}
+
+//Agregar pago de servicio y plazo fijo 
