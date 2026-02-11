@@ -71,9 +71,68 @@ function comprarDolares(){
         document.getElementById("validacionDolares").textContent=`Usted ha comprado la cantidad de ${conversion} dólares equivalentes a $ ${montoPesos} `;
 
     }
+}
+let botonPlazoFijo=document.getElementById("botonPlazoFijo");
+botonPlazoFijo.addEventListener("click",constituirPlazoFijo);
 
+function constituirPlazoFijo(){
+    let montoPlazoFijo=Number(document.getElementById("montoPlazoFijo").value);
+    let plazo=Number(document.getElementById("plazo").value);
+    let tasa=30;
+    let montoACobrar=montoPlazoFijo+((montoPlazoFijo*tasa*plazo)/36500);
+   
+    if(montoPlazoFijo<=0){
+        document.getElementById("montoACobrar").textContent=`El monto es invalido`;
+        return;
+    }
+    if(plazo<=0){
+        document.getElementById("montoACobrar").textContent=`El plazo es invalido`;
+        return;
+    }
+    if (montoPlazoFijo>saldoActual){
+        document.getElementById("montoACobrar").textContent=`El saldo es insuficiente`
+    } else { saldoActual=saldoActual-montoPlazoFijo;
+        consultarSaldo();
+        document.getElementById("montoACobrar").textContent=`El monto a cobrar sumando capital e interes es igual a ${montoACobrar}`;
+
+    }
+
+}
+let botonPagarServicio=document.getElementById("pagarServicio");
+botonPagarServicio.addEventListener("click",pagarServicio);
+
+function pagarServicio(){
+    let servicio=document.getElementById("servicio").value;
+    let codigoPago=document.getElementById("codigoPago").value;
+    let montoServicio=Number(document.getElementById("montoServicio").value);
+
+    if (servicio===""){
+        document.getElementById("pagoServicio").textContent="Ingrese un servicio";
+        return;
+    }
+
+    if (codigoPago===""){
+        document.getElementById("pagoServicio").textContent="Ingrese código de pago";
+        return;
+    }
+
+    if(montoServicio<=0){
+        document.getElementById("pagoServicio").textContent="Ingrese un monto valido";
+        return;
+    }
+    if (montoServicio>saldoActual){
+        document.getElementById("pagoServicio").textContent="Saldo insuficiente"
+    } else {
+        saldoActual=saldoActual-montoServicio;
+        consultarSaldo();
+        document.getElementById("pagoServicio").textContent=`Se ha pagado el servicio ${servicio} por la suma de $${montoServicio}`;
+    }
 
 
 }
+
+
+
+
 
 //Agregar pago de servicio y plazo fijo 
