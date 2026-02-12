@@ -4,16 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <h1>Bienvenido al Home Banking del Banco Progreso</h1>
 
 
-    
-    <p id="saldo">saldo</p> 
+    <section id="login">
+    <p>Ingrese su usuario provisorio</p>
 
-   <button id="botonTransferir">Transferir</button>
+    <input type="number" id="usuarioProvisorio" placeholder="usuario provisorio 1234">
+
+    <p>Ingrese su contraseña provisoria</p>
+    <input type="number" id="claveProvisoria" placeholder="clave provisoria 8888">
+    <p id="validacionLogin"></p>
+
+
+    <button id="ingreso" type="button">INGRESAR</button>
+    </section>
+
+    <section id="homebanking">
+    <p id="saldo">saldo</p> 
+    <button id="botonTransferir">Transferir</button>
 
     <input type="number" min="1" id="montoTransferencia" placeholder="Ingrese monto a transferir">
     <input type="text" id="destinatario" placeholder="Ingrese CBU/CVU/ALIAS">
@@ -39,7 +52,7 @@
     <input type="number" id="montoServicio" placeholder="Ingrese el monto a pagar">
     <p id="pagoServicio"></p>
 
-
+    </section>
 
     <script src="./main.js"></script>
 </body>

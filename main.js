@@ -1,5 +1,37 @@
+let intentos=3;
+
+let botonIngresar =document.getElementById("ingreso");
+botonIngresar.addEventListener("click",validarLogin);
+
+function validarLogin(){
+     
+        let usuario=Number(document.getElementById("usuarioProvisorio").value);
+        let clave=Number(document.getElementById("claveProvisoria").value);
+        if(usuario===1234 && clave===8888){
+            document.getElementById("validacionLogin").textContent=`Bienvenido ya podes comenzar a operar con tu Home Banking`;
+
+            document.getElementById("login").style.display="none";
+            document.getElementById("homebanking").style.display="block";
+            return;
+        }intentos--;
+        if (intentos>0){
+            document.getElementById("validacionLogin").textContent=`Usuario o clave incorrectos .Te quedan ${intentos}intentos`;
+        
+        }else{document.getElementById("validacionLogin").textContent=`Usuario bloqueado,comunicate con el Banco`;
+            botonIngresar.disabled=true;
+        
+        }
+
+    }
+    
+
+
+
+
+
 let saldoActual=50000;
 let saldoElemento=document.getElementById("saldo");
+
 
 
 function consultarSaldo(){
