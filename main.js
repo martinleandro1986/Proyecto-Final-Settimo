@@ -32,7 +32,8 @@ function validarLogin(){
 let saldoActual=50000;
 let saldoElemento=document.getElementById("saldo");
 
-
+let botonConsultarSaludo=document.getElementById("consultarSaldo");
+botonConsultarSaludo.addEventListener("click",consultarSaldo);
 
 function consultarSaldo(){
     saldoElemento.textContent=`El saldo actual es ${saldoActual}`;
