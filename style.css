@@ -16,4 +16,20 @@ body {
 h1{
     color: white;
     text-align: center;
+    font-size: 50px;
+}
+
+p {
+    color:white;
+    font-size: 25px;
+}
+
+input::placeholder{
+    text-align:center;
+}
+
+ #logo{
+    width:10%;
+    height:auto;
+
 }

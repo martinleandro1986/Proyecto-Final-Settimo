@@ -171,3 +171,4 @@ botonesMenu.forEach(boton => {
         document.getElementById(idSeccion).style.display = "block";
     });
 });
+
