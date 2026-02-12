@@ -25,15 +25,11 @@ function validarLogin(){
     }
     
 
-
-
-
-
 let saldoActual=50000;
 let saldoElemento=document.getElementById("saldo");
 
-let botonConsultarSaludo=document.getElementById("consultarSaldo");
-botonConsultarSaludo.addEventListener("click",consultarSaldo);
+let botonConsultarSaldo=document.getElementById("consultarSaldo");
+botonConsultarSaldo.addEventListener("click",consultarSaldo);
 
 function consultarSaldo(){
     saldoElemento.textContent=`El saldo actual es ${saldoActual}`;
@@ -165,7 +161,13 @@ function pagarServicio(){
 }
 
 
+let botonesMenu = document.querySelectorAll("#menu button");
+let secciones = document.querySelectorAll(".seccion");
 
-
-
-//Agregar pago de servicio y plazo fijo 
+botonesMenu.forEach(boton => {
+    boton.addEventListener("click", () => {
+        secciones.forEach(sec => sec.style.display = "none");
+        let idSeccion = boton.dataset.seccion;
+        document.getElementById(idSeccion).style.display = "block";
+    });
+});

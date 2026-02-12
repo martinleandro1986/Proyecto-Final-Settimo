@@ -1,7 +1,12 @@
 #homebanking {
-    display:none;
-
+    display: none;
 }
+
+.seccion {
+    display: none;
+}
+
+
 
 body {
     background-color:rgb(83, 83, 102);

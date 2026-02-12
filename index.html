@@ -26,40 +26,58 @@
 
     <button id="ingreso" type="button">INGRESAR</button>
     </section>
-
     
+
 
 
     <section id="homebanking">
 
+    <nav id="menu">
+        <button data-seccion="consultarsaldo" id="consultarSaldo">Consultar Saldo</button> 
+        <button data-seccion="transferir" id="botonTransferir">Transferir</button>
+        <button data-seccion="prestamo" id="botonPrestamo">Solicitar Préstamo Preaprobado</button>
+        <button data-seccion="dolares" id="botonDolares">Comprar Dólares</button>
+        <button data-seccion="plazoFijo" id="botonPlazoFijo">Constituir Plazo Fijo</button>
+        <button data-seccion="servicio" id="pagarServicio">Pagar Servicio</button>
+    </nav>
 
-    <button id="consultarSaldo">Consultar Saldo</button>   
+    <section id="consultarsaldo"class="seccion">
     <p id="saldo">saldo</p> 
-    <button id="botonTransferir">Transferir</button>
+    </section>  
 
+  
+    <section id="transferir" class="seccion">
     <input type="number" min="1" id="montoTransferencia" placeholder="Ingrese monto a transferir">
     <input type="text" id="destinatario" placeholder="Ingrese CBU/CVU/ALIAS">
    
     <p id="validacionMontoT"></p>
+    </section>
 
-    <button id="botonPrestamo">Solicitar Préstamo Preaprobado</button>
+
+    <section id="prestamo" class="seccion">
     <input type="number" id="prestamo" placeholder="Ingrese monto a solicitar">
     <p id="validacionPrestamo"></p>
+    </section>
 
-    <button id="botonDolares">Comprar Dólares</button>
+    <section id="dolares" class="seccion">
     <input type="number" id="montoPesos" placeholder="Ingrese el monto en pesos que desea comprar">
     <p id="validacionDolares"></p>
+    </section>
 
-    <button id="botonPlazoFijo">Constituir Plazo Fijo</button>
+    <section id="plazoFijo" class="seccion">
     <input type="number" id="montoPlazoFijo" placeholder="Ingrese monto plazo fijo">
     <input type="number" id="plazo" placeholder="Ingrese plazo en días ">
     <p id="montoACobrar"></p>
- 
-    <button id="pagarServicio">Pagar Servicio</button>
+    </section>
+
+
+
+    <section id="servicio" class="seccion">
     <input type="text" id="servicio" placeholder="Ingrese el servicio que desea pagar">
     <input type="number" id="codigoPago" placeholder="Ingrese el código de pago">
     <input type="number" id="montoServicio" placeholder="Ingrese el monto a pagar">
     <p id="pagoServicio"></p>
+    </section>
 
     </section>
 
