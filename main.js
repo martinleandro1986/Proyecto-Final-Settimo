@@ -73,7 +73,7 @@ botonConfirmarPrestamo.addEventListener("click",sacarPrestamo);
 
 function sacarPrestamo(){
     let montoPreaprobado=5000000;
-    let montoSolicitado=Number(document.getElementById("prestamo").value);
+    let montoSolicitado=Number(document.getElementById("montoPrestamo").value);
 
     if(montoPreaprobado<montoSolicitado){
         document.getElementById("validacionPrestamo").textContent="Ingrese un importe menor"
