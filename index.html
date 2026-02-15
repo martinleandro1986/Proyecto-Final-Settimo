@@ -29,7 +29,7 @@
     <button id="ingreso" type="button">INGRESAR</button>
     </section>
     
-
+    <p id="fechaActual"></p>
 
 
     <section id="homebanking">
@@ -40,7 +40,7 @@
         <button data-seccion="prestamo" id="botonPrestamo">Solicitar Préstamo Preaprobado</button>
         <button data-seccion="dolares" id="botonDolares">Comprar Dólares</button>
         <button data-seccion="plazoFijo" id="botonPlazoFijo">Constituir Plazo Fijo</button>
-        <button data-seccion="servicio" id="pagarServicio">Pagar Servicio</button>
+        <button data-seccion="pagoServicioSeccion" id="pagarServicio">Pagar Servicio</button>
     </nav>
 
     <section id="consultarsaldo"class="seccion">
@@ -53,7 +53,8 @@
     <input type="number" min="1" id="montoTransferencia" placeholder="Ingrese monto a transferir">
     <br>
     <input type="text" id="destinatario" placeholder="Ingrese CBU/CVU/ALIAS">
-   
+    <button id="btnConfirmartransferencia">Confirmar transferencia</button>
+
     <p id="validacionMontoT"></p>
     </section>
 
@@ -62,6 +63,7 @@
     <br>
     <input type="number" id="prestamo" placeholder="Ingrese monto a solicitar">
     <br>
+    <button id="btnconfirmarPrestamo">Confirmar Prestamo</button>
     <p id="validacionPrestamo"></p>
     </section>
 
@@ -69,6 +71,7 @@
     <br>
     <input type="number" id="montoPesos" placeholder="Ingrese el monto en pesos que desea comprar">
     <br>
+    <button id="btnConfirmarCompra">Confirmar Compra de Dólares</button>
     <p id="validacionDolares"></p>
     </section>
 
@@ -78,19 +81,21 @@
     <br>
     <input type="number" id="plazo" placeholder="Ingrese plazo en días ">
     <br>
+    <button id="btnconfirmarplazofijo">Confirmar constitución de plazo fijo</button>
     <p id="montoACobrar"></p>
     </section>
 
 
 
-    <section id="servicio" class="seccion">
+    <section id="pagoServicioSeccion" class="seccion">
     <br>
-    <input type="text" id="servicio" placeholder="Ingrese el servicio que desea pagar">
-    <br>
+    <input type="text" id="servicioInput" placeholder="Ingrese el servicio">
+    <br><br>
     <input type="number" id="codigoPago" placeholder="Ingrese el código de pago">
-    <br>
-    <input type="number" id="montoServicio" placeholder="Ingrese el monto a pagar">
-    <br>
+    <br><br>
+    <input type="number" id="montoServicio" placeholder="Ingrese el monto a pagar" >
+    <br><br>
+    <button id="btnConfirmarPago">Confirmar Pago de Servicio</button>
     <p id="pagoServicio"></p>
     </section>
 

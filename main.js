@@ -23,7 +23,10 @@ function validarLogin(){
         }
 
     }
-    
+
+let fecha=new Date();
+
+document.getElementById("fechaActual").textContent=`Fecha:${fecha.toLocaleDateString()}`;
 
 let saldoActual=50000;
 let saldoElemento=document.getElementById("saldo");
@@ -39,7 +42,8 @@ consultarSaldo();
 
 
 let botonTransferir = document.getElementById("botonTransferir");
-botonTransferir.addEventListener("click", transferir);
+let btnConfirmarTransferencia=document.getElementById("btnConfirmartransferencia");
+btnConfirmarTransferencia.addEventListener("click",transferir)
 
 function transferir(){
     let destino=document.getElementById("destinatario").value;
@@ -63,7 +67,8 @@ function transferir(){
 }}
 
 let botonPrestamo=document.getElementById("botonPrestamo");
-botonPrestamo.addEventListener("click",sacarPrestamo);
+let botonConfirmarPrestamo=document.getElementById("btnconfirmarPrestamo");
+botonConfirmarPrestamo.addEventListener("click",sacarPrestamo);
 
 
 function sacarPrestamo(){
@@ -81,7 +86,8 @@ function sacarPrestamo(){
 
 
 let botonDolares=document.getElementById("botonDolares");
-botonDolares.addEventListener("click",comprarDolares);
+let botonConfirmarCompra=document.getElementById("btnConfirmarCompra");
+botonConfirmarCompra.addEventListener("click",comprarDolares);
 
 function comprarDolares(){
     let cotizacion=1460;
@@ -102,7 +108,8 @@ function comprarDolares(){
     }
 }
 let botonPlazoFijo=document.getElementById("botonPlazoFijo");
-botonPlazoFijo.addEventListener("click",constituirPlazoFijo);
+let botonConfirmarPlazoFijo=document.getElementById("btnconfirmarplazofijo");
+botonConfirmarPlazoFijo.addEventListener("click",constituirPlazoFijo);
 
 function constituirPlazoFijo(){
     let montoPlazoFijo=Number(document.getElementById("montoPlazoFijo").value);
@@ -128,10 +135,11 @@ function constituirPlazoFijo(){
 
 }
 let botonPagarServicio=document.getElementById("pagarServicio");
-botonPagarServicio.addEventListener("click",pagarServicio);
+let botonConfirmarPago=document.getElementById("btnConfirmarPago");
+botonConfirmarPago.addEventListener("click",pagarServicio);
 
 function pagarServicio(){
-    let servicio=document.getElementById("servicio").value;
+    let servicio=document.getElementById("servicioInput").value;
     let codigoPago=document.getElementById("codigoPago").value;
     let montoServicio=Number(document.getElementById("montoServicio").value);
 
