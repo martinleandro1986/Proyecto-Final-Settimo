@@ -1,3 +1,34 @@
+let config = null;
+
+let saldoActual = 50000;
+let cotizacion = 1460;
+let tasaPF = 30;
+let USUARIO_OK = 1234;
+let CLAVE_OK = 8888;
+
+async function cargarConfig() {
+  try {
+    const resp = await fetch("./data.json");
+    if (!resp.ok) throw new Error("No se pudo cargar data.json");
+    config = await resp.json();
+
+ 
+    saldoActual = Number(config.saldoInicial);
+    cotizacion = Number(config.cotizacionDolar);
+    tasaPF = Number(config.tasaPlazoFijo);
+    USUARIO_OK = Number(config.usuario);
+    CLAVE_OK = Number(config.clave);
+
+    consultarSaldo(); // refresca el saldo en pantalla si querés
+  } catch (err) {
+    console.warn("Usando valores por defecto:", err);
+  }
+}
+
+document.addEventListener("DOMContentLoaded", cargarConfig);
+
+
+
 let intentos=3;
 
 let botonIngresar =document.getElementById("ingreso");
@@ -7,7 +38,7 @@ function validarLogin(){
      
         let usuario=Number(document.getElementById("usuarioProvisorio").value);
         let clave=Number(document.getElementById("claveProvisoria").value);
-        if(usuario===1234 && clave===8888){
+        if (usuario === USUARIO_OK && clave === CLAVE_OK){
             document.getElementById("validacionLogin").textContent=`Bienvenido ya podes comenzar a operar con tu Home Banking`;
 
             document.getElementById("login").style.display="none";
@@ -28,7 +59,7 @@ let fecha=new Date();
 
 document.getElementById("fechaActual").textContent=`Fecha:${fecha.toLocaleDateString()}`;
 
-let saldoActual=50000;
+let movimientos= [];
 let saldoElemento=document.getElementById("saldo");
 
 let botonConsultarSaldo=document.getElementById("consultarSaldo");
@@ -62,9 +93,16 @@ function transferir(){
     document.getElementById("validacionMontoT").textContent="El saldo es insuficiente"
 } else  { saldoActual=saldoActual-montoIngresado;
     consultarSaldo();
-     document.getElementById("validacionMontoT").textContent=`Se ha transferido la suma de $ ${montoIngresado} exitosamente`;
+     document.getElementById("validacionMontoT").textContent=`Se ha transferido a al destinatario ${destino} la suma de $ ${montoIngresado.toFixed(2)} exitosamente`;
+    movimientos.push({
+    tipo: "Transferencia",
+    monto: montoIngresado,
+    fecha: new Date().toLocaleDateString(),
+}); 
+    mostrarHistorial();
+}} 
 
-}}
+
 
 let botonPrestamo=document.getElementById("botonPrestamo");
 let botonConfirmarPrestamo=document.getElementById("btnconfirmarPrestamo");
@@ -81,7 +119,12 @@ function sacarPrestamo(){
         consultarSaldo();
         document.getElementById("validacionPrestamo").textContent=`El préstamo ha sido acreditado en su cuenta por el importe de ${montoSolicitado} con TNA 30% pagadero 24 cuotas mensuales`;
     }
-
+    movimientos.push({
+    tipo: "Prestamo",
+    monto: montoSolicitado,
+    fecha: new Date().toLocaleDateString(),
+}); 
+    mostrarHistorial();
 }
 
 
@@ -90,7 +133,6 @@ let botonConfirmarCompra=document.getElementById("btnConfirmarCompra");
 botonConfirmarCompra.addEventListener("click",comprarDolares);
 
 function comprarDolares(){
-    let cotizacion=1460;
     let montoPesos=Number(document.getElementById("montoPesos").value);
     let conversion= Math.floor(montoPesos/cotizacion);
 
@@ -103,9 +145,15 @@ function comprarDolares(){
         document.getElementById("validacionDolares").textContent=`Su saldo es insuficiente`
     } else {saldoActual= saldoActual-montoPesos;
         consultarSaldo();
-        document.getElementById("validacionDolares").textContent=`Usted ha comprado la cantidad de ${conversion} dólares equivalentes a $ ${montoPesos} `;
+        document.getElementById("validacionDolares").textContent=`Usted ha comprado la cantidad de ${conversion.toFixed(2)} dólares equivalentes a $ ${montoPesos.toFixed(2)} `;
 
     }
+    movimientos.push({
+    tipo: "Compra de dólares",
+    monto: `${conversion} USD`,
+    fecha: new Date().toLocaleDateString(),
+}); 
+    mostrarHistorial();
 }
 let botonPlazoFijo=document.getElementById("botonPlazoFijo");
 let botonConfirmarPlazoFijo=document.getElementById("btnconfirmarplazofijo");
@@ -114,8 +162,11 @@ botonConfirmarPlazoFijo.addEventListener("click",constituirPlazoFijo);
 function constituirPlazoFijo(){
     let montoPlazoFijo=Number(document.getElementById("montoPlazoFijo").value);
     let plazo=Number(document.getElementById("plazo").value);
-    let tasa=30;
-    let montoACobrar=montoPlazoFijo+((montoPlazoFijo*tasa*plazo)/36500);
+    let interes = (montoPlazoFijo * tasaPF * plazo) / 36500;
+    let montoACobrar = montoPlazoFijo + interes;
+    let fechaHoy=new Date();
+    let vencimiento= new Date(fechaHoy);
+    vencimiento.setDate(fechaHoy.getDate()+plazo);
    
     if(montoPlazoFijo<=0){
         document.getElementById("montoACobrar").textContent=`El monto es invalido`;
@@ -129,10 +180,17 @@ function constituirPlazoFijo(){
         document.getElementById("montoACobrar").textContent=`El saldo es insuficiente`
     } else { saldoActual=saldoActual-montoPlazoFijo;
         consultarSaldo();
-        document.getElementById("montoACobrar").textContent=`El monto a cobrar sumando capital e interes es igual a ${montoACobrar}`;
+        document.getElementById("montoACobrar").textContent=`PLAZO FIJO REALIZADO - 
+        CAPITAL: $${montoPlazoFijo.toFixed(2)} INTERES:$${interes.toFixed(2)} MONTO A COBRAR:$${montoACobrar.toFixed(2)}
+        VENCIMIENTO:${vencimiento.toLocaleDateString()}`;
 
     }
-
+    movimientos.push({
+    tipo: "Plazo fijo",
+    monto: montoPlazoFijo,
+    fecha: new Date().toLocaleDateString(),
+}); 
+    mostrarHistorial();
 }
 let botonPagarServicio=document.getElementById("pagarServicio");
 let botonConfirmarPago=document.getElementById("btnConfirmarPago");
@@ -164,7 +222,12 @@ function pagarServicio(){
         consultarSaldo();
         document.getElementById("pagoServicio").textContent=`Se ha pagado el servicio ${servicio} por la suma de $${montoServicio}`;
     }
-
+    movimientos.push({
+    tipo: `Pago de Servicio ${servicio}`,
+    monto: montoServicio,
+    fecha: new Date().toLocaleDateString(),
+}); 
+    mostrarHistorial();
 
 }
 
@@ -180,3 +243,41 @@ botonesMenu.forEach(boton => {
     });
 });
 
+
+
+function mostrarHistorial(){
+    let lista=document.getElementById("historial");
+    lista.innerHTML= "";
+
+    movimientos.forEach(mov =>{
+    let li=document.createElement("li");
+    li.textContent =`${mov.fecha} - ${mov.tipo}- $${mov.monto}`;
+    lista.appendChild(li);
+});
+
+}
+
+let botonCerrarSesion=document.getElementById("btnCerrarSesion");
+botonCerrarSesion.addEventListener("click",cerrarSesion);
+
+function cerrarSesion(){
+    document.getElementById("homebanking").style.display = "none";
+    document.getElementById("login").style.display = "block";
+
+
+    document.querySelectorAll("input").forEach(input => {
+        input.value = "";
+    });
+
+ 
+    document.getElementById("validacionLogin").textContent = "";
+
+    // ocultar secciones
+    document.querySelectorAll(".seccion").forEach(sec => {
+        sec.style.display = "none";
+    });
+
+    // resetear intentos
+    intentos = 3;
+    botonIngresar.disabled = false;
+}
