@@ -1,0 +1,7 @@
+{
+    "usuario":1234,
+    "clave":8888,
+    "saldoInicial":50000,
+    "cotizacionDolar":1460,
+    "tasaPlazoFijo":30
+}

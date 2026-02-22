@@ -18,6 +18,7 @@ async function cargarConfig() {
     tasaPF = Number(config.tasaPlazoFijo);
     USUARIO_OK = Number(config.usuario);
     CLAVE_OK = Number(config.clave);
+  
 
     consultarSaldo(); // refresca el saldo en pantalla si querés
   } catch (err) {
@@ -39,16 +40,28 @@ function validarLogin(){
         let usuario=Number(document.getElementById("usuarioProvisorio").value);
         let clave=Number(document.getElementById("claveProvisoria").value);
         if (usuario === USUARIO_OK && clave === CLAVE_OK){
-            document.getElementById("validacionLogin").textContent=`Bienvenido ya podes comenzar a operar con tu Home Banking`;
+            Swal.fire({
+                       icon: "success",
+                       title: "Bienvenido",
+                       text: "Ya podés comenzar a operar con tu Home Banking",
+                       confirmButtonText: "Ingresar"
+                     });         
 
             document.getElementById("login").style.display="none";
             document.getElementById("homebanking").style.display="block";
             return;
         }intentos--;
         if (intentos>0){
-            document.getElementById("validacionLogin").textContent=`Usuario o clave incorrectos .Te quedan ${intentos}intentos`;
-        
-        }else{document.getElementById("validacionLogin").textContent=`Usuario bloqueado,comunicate con el Banco`;
+            Swal.fire({
+                        icon: "error",
+                        title: "Datos incorrectos",
+                        text: `Usuario o clave incorrectos. Te quedan ${intentos} intentos`
+                      });
+        }else{Swal.fire({
+                        icon: "error",
+                        title: "Usuario Bloqueado",
+                        text: `Comunicate con el banco`
+                      });
             botonIngresar.disabled=true;
         
         }
@@ -66,7 +79,12 @@ let botonConsultarSaldo=document.getElementById("consultarSaldo");
 botonConsultarSaldo.addEventListener("click",consultarSaldo);
 
 function consultarSaldo(){
-    saldoElemento.textContent=`El saldo actual es ${saldoActual}`;
+    Swal.fire({
+               icon: "success",
+               title: "Saldo",
+               text: `El saldo actual es ${saldoActual}`
+});
+   
 }
 
 consultarSaldo();
@@ -93,7 +111,11 @@ function transferir(){
     document.getElementById("validacionMontoT").textContent="El saldo es insuficiente"
 } else  { saldoActual=saldoActual-montoIngresado;
     consultarSaldo();
-     document.getElementById("validacionMontoT").textContent=`Se ha transferido a al destinatario ${destino} la suma de $ ${montoIngresado.toFixed(2)} exitosamente`;
+     Swal.fire({
+               icon: "success",
+               title: "Transferencia realizada",
+               text: `Se transfirieron $${montoIngresado.toFixed(2)} a ${destino}`
+});
     movimientos.push({
     tipo: "Transferencia",
     monto: montoIngresado,
@@ -113,11 +135,25 @@ function sacarPrestamo(){
     let montoPreaprobado=5000000;
     let montoSolicitado=Number(document.getElementById("montoPrestamo").value);
 
+    if (montoSolicitado===""){
+        document.getElementById("validacionPrestamo").textContent="Ingrese un monto";
+        return;
+    } 
+
+    if(montoSolicitado<=0){
+        document.getElementById("validacionPrestamo").textContent=`Ingrese un monto valido`;
+        return;
+    }   
     if(montoPreaprobado<montoSolicitado){
         document.getElementById("validacionPrestamo").textContent="Ingrese un importe menor"
     } else {saldoActual=saldoActual + montoSolicitado;
         consultarSaldo();
-        document.getElementById("validacionPrestamo").textContent=`El préstamo ha sido acreditado en su cuenta por el importe de ${montoSolicitado} con TNA 30% pagadero 24 cuotas mensuales`;
+        Swal.fire({
+               icon: "success",
+               title: "Solicitud de préstamo validada",
+               text: `El préstamo ha sido acreditado en su cuenta por el importe de ${montoSolicitado} con TNA 30% pagadero 24 cuotas mensuales`
+});
+        
     }
     movimientos.push({
     tipo: "Prestamo",
@@ -145,7 +181,12 @@ function comprarDolares(){
         document.getElementById("validacionDolares").textContent=`Su saldo es insuficiente`
     } else {saldoActual= saldoActual-montoPesos;
         consultarSaldo();
-        document.getElementById("validacionDolares").textContent=`Usted ha comprado la cantidad de ${conversion.toFixed(2)} dólares equivalentes a $ ${montoPesos.toFixed(2)} `;
+        Swal.fire({
+               icon: "success",
+               title: "Compra venta de dólares exitosa",
+               text: `Usted ha comprado la cantidad de ${conversion.toFixed(2)} dólares equivalentes a $ ${montoPesos.toFixed(2)} `
+});
+    
 
     }
     movimientos.push({
@@ -180,9 +221,14 @@ function constituirPlazoFijo(){
         document.getElementById("montoACobrar").textContent=`El saldo es insuficiente`
     } else { saldoActual=saldoActual-montoPlazoFijo;
         consultarSaldo();
-        document.getElementById("montoACobrar").textContent=`PLAZO FIJO REALIZADO - 
-        CAPITAL: $${montoPlazoFijo.toFixed(2)} INTERES:$${interes.toFixed(2)} MONTO A COBRAR:$${montoACobrar.toFixed(2)}
-        VENCIMIENTO:${vencimiento.toLocaleDateString()}`;
+           Swal.fire({
+               icon: "success",
+               title: "Plazo fijo realizado exitosamente",
+               text: `CAPITAL: $${montoPlazoFijo.toFixed(2)} INTERES:$${interes.toFixed(2)} MONTO A COBRAR:$${montoACobrar.toFixed(2)}
+        VENCIMIENTO:${vencimiento.toLocaleDateString()}`
+});
+        
+        
 
     }
     movimientos.push({
@@ -220,7 +266,12 @@ function pagarServicio(){
     } else {
         saldoActual=saldoActual-montoServicio;
         consultarSaldo();
-        document.getElementById("pagoServicio").textContent=`Se ha pagado el servicio ${servicio} por la suma de $${montoServicio}`;
+        Swal.fire({
+               icon: "success",
+               title: "Servicio abonado correctamente",
+               text: `Se ha pagado el servicio ${servicio} por la suma de $${montoServicio} `
+});
+
     }
     movimientos.push({
     tipo: `Pago de Servicio ${servicio}`,
